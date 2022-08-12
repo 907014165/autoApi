@@ -3,9 +3,6 @@ import { writeFile, dataTypeMap } from "./util";
 
 // 生成schema字符串模板
 const createSchemaTemplate = (definition: Definition) => {
-  if (definition?.properties === null) {
-    console.log(definition, 'definition')
-  }
   return `
     // ${definition.description}
     interface ${definition.title} {

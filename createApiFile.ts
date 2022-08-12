@@ -34,7 +34,7 @@ const createApiTemplate = (params: {
         })
         .join(",\n") ?? '';
       const queryStr = apiModel.parameters?.map((parameter) => {
-        return `${parameter.name}${parameter.default ? ` = ${parameter.default}` : ''}`
+        return `${parameter.name}${parameter.default ? ` = ${typeof parameter.default === 'string' ? `'${parameter.default}'` : parameter.default}` : ''}`
       }).join(',\n') ?? '';
 
       return schemaStr ? `{
