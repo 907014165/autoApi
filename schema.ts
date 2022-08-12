@@ -3,12 +3,11 @@ export type Recordable<T = any> = Record<string, T>;
 type QueryIn = "query" | "body";
 
 interface Property {
-  type: DataType;
+  type?: DataType;
   description: string;
   enum?: string[];
-  items?: {
-    type: string;
-  };
+  items?: Property;
+  $ref?: string
 }
 
 interface Parameter {
