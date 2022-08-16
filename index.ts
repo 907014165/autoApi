@@ -2,15 +2,13 @@
 import { ApiDocs, Definition, ApiModel, Recordable } from "./schema";
 import createSchemaFile from "./createSchemaFile";
 import { batchCreateApiFile } from "./createApiFile";
-import { httpGetFile, getProcessArgv } from './util'
+import { httpGetFile, getProcessArgv, camelCase } from './util'
 
 // 入口函数
 const init = async () => {
-  const { apiUrl } = getProcessArgv();
+  const { apiUrl, outDir } = getProcessArgv();
   const apiDocs = await httpGetFile<ApiDocs>(apiUrl);
-  const groupPaths = Object.entries(
-    (apiDocs as unknown as ApiDocs).paths
-  ).reduce((prev, [path, apiModel]) => {
+  const groupPaths = Object.entries(apiDocs.paths).reduce((prev, [path, apiModel]) => {
     const index = prev.findIndex((item) => {
       return Object.keys(item)[0].includes(path.split("/")[2]);
     });
@@ -23,17 +21,18 @@ const init = async () => {
     }
     return prev;
   }, [] as Recordable<Recordable<ApiModel>>[]);
-  const { definitions } = (apiDocs as unknown as ApiDocs);
+
   await batchCreateApiFile({
-    baseUrl: "/dayu-chat-server/api",
+    baseUrl: apiDocs.basePath,
     groupPaths: groupPaths,
-    outDir: "./dist",
-    namespace: "DayuChatServer"
+    outDir: outDir,
+    namespace: camelCase(apiDocs.basePath)
   });
 
+  const { definitions } = apiDocs;
   await createSchemaFile({
-    namespace: 'DayuChatServer',
-    outDir: "./dist",
+    namespace: camelCase(apiDocs.basePath),
+    outDir: outDir,
     definitions: definitions
   })
 };

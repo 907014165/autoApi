@@ -56,4 +56,5 @@ export interface ApiModel {
 export interface ApiDocs {
   definitions: Recordable<Definition>;
   paths: Recordable<Recordable<ApiModel>>;
+  basePath: string
 }

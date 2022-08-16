@@ -2,8 +2,9 @@ import {
   exists as _exists,
   readFile as _readFile,
   writeFile as _writeFile,
-  mkdir as _mkdir,
+  mkdir as fsMkdir,
   copyFile as _copyFile,
+  existsSync
 } from "fs";
 import http from 'http';
 
@@ -16,6 +17,11 @@ const fileExists = async (filename: string) => {
 };
 
 export const writeFile = async (content: string, filename: string) => {
+  // 先创建目录
+  const filePaths = filename.split('/');
+  await mkdir(filePaths.slice(0, filePaths.length - 1).join('/'))
+
+  // 生成文件
   if (!(await fileExists(filename))) {
     console.log(`创建 ${filename}`);
     // 清除空行
@@ -26,6 +32,16 @@ export const writeFile = async (content: string, filename: string) => {
     await promisify(_writeFile)(filename, content);
   }
 };
+
+export const mkdir = async (pathStr: string) => {
+  let pathList = pathStr.split("/");
+  for (let i = 1; i <= pathList.length; i++) {
+    let currentPath = pathList.slice(0, i).join("/");
+    if (!existsSync(currentPath)) {
+      await promisify(fsMkdir)(currentPath, { recursive: true });
+    }
+  }
+}
 
 export function camelCase(params: string) {
   return params.replace(/[\/_-][a-zA-z]/g, (str) =>

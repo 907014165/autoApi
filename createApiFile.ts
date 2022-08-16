@@ -1,6 +1,7 @@
 import { js as jsBeautify } from 'js-beautify';
 import { ApiModel, Recordable } from "./schema";
 import { writeFile, camelCase, dataTypeMap } from "./util";
+import config from './config'
 
 const createApiTemplate = (params: {
   url: string;
@@ -140,13 +141,7 @@ const createApiFile = async ({
   });
 
   const template = `
-    import send from 'kikyoLib/request';
-    interface PageEntity<T> {
-      data: Array<T>,
-      total?: number,
-      page?: number,
-      perPage?: number
-    }
+    ${config.importHeader}
     ${apiTemplates.join("\n\n")}
   `;
   const fileName = Object.keys(groupPath)[0].split("/")[2];

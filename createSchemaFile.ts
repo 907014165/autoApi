@@ -34,7 +34,7 @@ const createSchemaFile = async ({
     ${schemaTemplates.join('\n\n')}
   }
   `;
-  await writeFile(template, `${outDir}/schemas.d.ts`)
+  await writeFile(template, `${outDir}/schemas.d`)
 };
 
 export default createSchemaFile;
