@@ -1,0 +1,5 @@
+{
+  "apiUrl": "http://10.168.203.15:8500/thanos-platform-system/api/v2/api-docs",
+  "outDir": "./dist",
+  "namespace": "DayuApi"
+}

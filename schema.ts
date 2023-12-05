@@ -1,12 +1,18 @@
 declare type DataType = "object" | "string" | "integer" | "array";
 export type Recordable<T = any> = Record<string, T>;
-type QueryIn = "query" | "body";
+type QueryIn = "query" | "body"|'header';
 
-interface Property {
+
+interface PropertyItem {
+  type: DataType;
+  "$ref": string,
+  "originalRef": string
+}
+export interface Property {
   type?: DataType;
   description: string;
   enum?: string[];
-  items?: Property;
+  items?: PropertyItem;
   $ref?: string
 }
 
@@ -20,6 +26,7 @@ interface Parameter {
   format?: string;
   allowEmptyValue?: boolean;
   schema?: Schema;
+  items?: PropertyItem;
 }
 
 interface Schema {

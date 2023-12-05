@@ -83,3 +83,18 @@ export const httpGetFile = <T = unknown>(url: string): Promise<T> => new Promise
     });
   })
 });
+
+export const getOriginalRef = (originalRef:string)=>{
+  if (originalRef.includes('PageEntity')) {
+    const reg = /(?<=PageEntity«)(.*)(?=»)/g;
+    const match = originalRef.match(reg)?.[0] ?? '';
+    return match;
+  }
+  return originalRef;
+}
+
+
+// 编写一个中划线转小驼峰的函数
+export function hyphenToCamelCase(input: string): string {
+  return input.replace(/-([a-z])/g, (_, match) => match.toUpperCase());
+}

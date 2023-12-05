@@ -1,6 +1,6 @@
 const config = {
   importHeader: `
-  import send from 'kikyoLib/request';
+  import { request } from '@/service/request';
   interface PageEntity<T> {
     data: Array<T>,
     total?: number,
